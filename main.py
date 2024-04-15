@@ -60,6 +60,23 @@ def createEvent():
     return send_message(f"event created successfully ({name = }{description = }{date = }{userId})")
 
 
+@app.route('/updateEvent', methods=['POST', 'GET'])
+def updateEvent():
+    if request.method == 'GET':
+        return render_template("updateEvent.html")
+    userId = session.get('userId')
+    print(f"updateEvent: {userId}")
+    if userId == None:
+        return send_message("you are not logged in")
+    name = request.form['name']
+    description = request.form['description']
+    eventId = int(request.form['eventId'])
+    if not name or not description:
+        return send_message("name, description and date are all required")
+    update_event(name, description, userId, eventId)
+    return send_message(f"event updated successfully ({name = }{description = }{userId})")
+
+
 @app.route('/getEvents', methods=['GET'])  
 def getEvents():
     userId = session.get('userId')
