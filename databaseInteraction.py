@@ -30,6 +30,13 @@ def create_event(name: str, description: str, date: str, user_id) -> None:
     conn.execute("INSERT INTO events (name, description, date, user_id) VALUES (?, ?, ?, ?)", (name, description, date, user_id))
     conn.commit()
 
+def update_event(name: str, description: str, user_id, id) -> None:
+    conn = connect("database.db")
+    """Create a new event in the database."""
+    conn.execute("update events (name, description) VALUES (?, ?)", (name, description), "where user_id = ? and id = ?", (user_id, id))
+    conn.commit()
+
+
 def get_events_by_userId(userId):
     conn = connect("database.db")
     """Retrieve events from the database using a username."""
