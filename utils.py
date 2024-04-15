@@ -24,7 +24,7 @@ def treeInsert(word):
     for letter in word:
         node = node[letter]
 
-def passwordTreeSearch(word) -> str|False:
+def commonPassword(word) -> str|False:
     execused = False
     node = tree
     for letter in word:
@@ -35,5 +35,4 @@ def passwordTreeSearch(word) -> str|False:
         node = node[letter]
     if execused:
         return "this password is very similar to a common password"
-    return "this password is a common password"
-
+    return "this password is common"
