@@ -18,7 +18,7 @@ def create_user_if_not_exists(name, password) -> bool|int:
 def returns_name_and_id_if_user_exists_and_password_is_correct(name, password) -> tuple["userId", "username"]|None:
     conn = connect("database.db")
     """to be used when user is logging in and in order to check if password is correct and if so get id"""
-    cursor = conn.execute("SELECT id, name FROM users WHERE name = ? AND password = ?", (name, password))
+    cursor = conn.execute("SELECT id, name FROM users WHERE name = values(?) AND password = values(?)", (name, password))
     row = cursor.fetchone()
     if row:
         return row
@@ -32,8 +32,9 @@ def create_event(name: str, description: str, date: str, user_id) -> None:
 
 def update_event(name: str, description: str, user_id, id) -> None:
     conn = connect("database.db")
-    """Create a new event in the database."""
-    conn.execute("update events (name, description) VALUES (?, ?)", (name, description), "where user_id = ? and id = ?", (user_id, id))
+    sql = "UPDATE events SET name = ?, description = ? WHERE id = ? AND user_id = ?"
+
+    conn.execute(sql, (name, description, id, user_id))
     conn.commit()
 
 

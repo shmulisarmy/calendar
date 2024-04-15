@@ -74,7 +74,7 @@ def updateEvent():
     if not name or not description:
         return send_message("name, description and date are all required")
     update_event(name, description, userId, eventId)
-    return send_message(f"event created successfully ({name = }{description = }{userId})")
+    return send_message(f"event updated successfully ({name = }{description = }{userId})")
 
 
 @app.route('/getEvents', methods=['GET'])  
