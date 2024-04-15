@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% if name %}
+    <header>wellcome {{name}}</header>
+{% endif %}
+
+<table>
+    <tr>
+        <th>sun</th><th>mon</th><th>tue</th><th>wed</th><th>thu</th><th>fri</th><th>sat</th>
+    </tr>
+    
+</table>
+
+
+{% for day in calendar %}
+    <td>
+        {% for event in calendar[day] %}
+            <div class="event">
+                <h1>{{ event[0] }}</h1>
+                <h1>{{ event[1] }}</h1>
+                <h1>{{ event[2] }}</h1>
+                <h1>{{ event[3] }}</h1>
+            </div>
+        {% endfor %}
+    </td>
+    <br>
+{% endfor %}
+    
+{% endblock %}

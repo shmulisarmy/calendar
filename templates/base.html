@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0%;
+        }
+        nav {
+            height: 50px;
+            display: flex;
+            justify-content: space-around;
+            background-color: black;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/login">Login</a>
+        <a href="/signup">Signup</a>
+        <a href="/logout">Logout</a>
+        <a href="/createEvent">Create Event</a>
+        <a href="/getEvents">Get Events</a>
+    </nav>
+    {% block content %}
+    {{message}}
+    {% endblock %}
+    
+</body>
+</html>

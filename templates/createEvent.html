@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<form action="/createEvent" method="POST">
+    <label for="name">name</label>
+    <input type="text" name="name">
+    <br>
+    <label for="description">description</label>
+    <input type="text" name="description">
+    <br>
+    <label for="date">date</label>
+    <input type="date" name="date">
+    <br>
+    <button type="submit">Submit</button>
+</form>
+{% endblock %}
