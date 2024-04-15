@@ -1,7 +1,7 @@
 import bcrypt
 from collections import defaultdict
 
-from settings import weekDayThatMonthStartsOn
+from settings import weekDayThatMonthStartsOn, minDifferenceFromCommonPasswords
 
 daysTool = {(str(i) if i > 9 else f"0{str(i)}"): [] for i in range(31)}
 sortedCalendarDates = [[(str(week+day) if week+day > 9 else f"0{str(week+day)}") for day in range(1, 8)] for week in range(weekDayThatMonthStartsOn, 28+weekDayThatMonthStartsOn, 7)]
@@ -24,13 +24,13 @@ def passwordTreeInsert(word):
         node = node[letter]
 
 def commonPassword(word) -> str|bool:
-    execused = False
+    execused = 0
     node = passwordTree
     for letter in word:
         if letter not in node:
-            if execused:
+            if execused >= minDifferenceFromCommonPasswords:
                 return False
-            execused = True
+            execused += 1
         else:
             node = node[letter]
     if execused:
