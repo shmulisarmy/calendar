@@ -34,7 +34,7 @@ def get_events_by_userId(userId):
     conn = connect("database.db")
     """Retrieve events from the database using a username."""
     # First, get the user_id for the given username
-    cursor = conn.execute("SELECT name, description, date FROM events WHERE user_id = ?", (userId,))
+    cursor = conn.execute("SELECT name, description, date, id FROM events WHERE user_id = ?", (userId,))
     events = cursor.fetchall()
 
     return events
@@ -48,3 +48,7 @@ def display_events():
     return events
 
 
+def delete_event(userId, eventId):
+    conn = connect("database.db")
+    conn.execute("DELETE FROM events WHERE id = ? and user_id = ?", (eventId, userId))
+    conn.commit()

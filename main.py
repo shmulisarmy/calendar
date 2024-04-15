@@ -98,6 +98,18 @@ def signup():
     return send_message("user create successfully" )
 
 
+@app.route("/deleteEvent", methods=['POST'])
+def deleteEvent():
+    userId = session.get('userId')
+    if userId == None:
+        return "you are not logged in"
+    print(f"{request.get_json() = }")
+    eventId = request.get_json().get('eventId')
+    print(f"deleteEvent: {userId = } {eventId = }")
+    delete_event(userId, eventId)
+    return "event deleted successfully"
+
+
 @app.route("/", methods=['POST', 'GET'])
 def home():
     return render_template("index.html", calendar=display_events())
