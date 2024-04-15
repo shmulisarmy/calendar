@@ -50,6 +50,8 @@ def createEvent():
     name = request.form['name']
     description = request.form['description']
     date = request.form['date']
+    if not name or not description or not date:
+        return send_message("name, description and date are all required")
     create_event(name, description, date, userId)
     return send_message(f"event created successfully ({name = }{description = }{date = }{userId})")
 
