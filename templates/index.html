@@ -1,4 +1,68 @@
 {% extends 'base.html' %}
+
+{% block style %}
+       <style>
+        :root{
+            --indent-amount: 4%;
+        }
+        table{
+            margin:var(--indent-amount);
+
+        }
+        td{
+            position: relative;
+            padding: 30px;
+
+        }
+        .date{
+            position: absolute;
+            top: 0%;
+            left: 0%;
+        }
+        .addEvent{
+            position: absolute;
+            bottom: 0%;
+        }
+        .event{
+            padding: 10px;
+        }
+        .event:hover {
+            border: 1px solid black;
+        }
+        form{
+            border: 1px solid black;
+            border-radius: 10px;
+            display: none;
+            position: absolute;
+            background-color: white;
+            padding: 30px;
+            .close{
+                position: absolute;
+                top: 3%;
+                left: 3%;
+                padding: 5px;
+                cursor: pointer;
+                border-radius: 10px;
+                border: 1px solid black;
+                color: red;
+            }
+            
+        }
+        button{
+            background-color: lightgreen;
+        }
+
+        button:hover{
+            background-color: lightblue;
+            cursor: pointer;
+        }
+        input, button{
+            border-radius: 10px;
+        }
+
+       </style> 
+{% endblock %}
+
 {% block content %}
 
 {% if name %}
@@ -10,22 +74,66 @@
         <th>sun</th><th>mon</th><th>tue</th><th>wed</th><th>thu</th><th>fri</th><th>sat</th>
     </tr>
     
+
+
+<tr>
+
+    {% for day in sortedCalendarDates %}
+    <td>
+        <p class="date">{{ day }}</p>
+        {% for event in calendar[day] %}
+        <div class="event">
+            <h3>{{ event[0] }}</h3>
+            <p>{{ event[1] }}</p>
+        </div>
+        {% endfor %}
+        <button class="addEvent" onclick="showForm({{ day }})">Add Event</button>
+    </td>
+    <br>
+    {% endfor %}
+</tr>
 </table>
 
 
-
-{% for day in calendar %}
-    <td>
-        {% for event in calendar[day] %}
-            <div class="event">
-                <h1>{{ event[0] }}</h1>
-                <h1>{{ event[1] }}</h1>
-                <h1>{{ event[2] }}</h1>
-                <h1>{{ event[3] }}</h1>
-            </div>
-        {% endfor %}
-    </td>
+<form action="/createEvent" method="POST">
+    <h3>new event</h3>
     <br>
-{% endfor %}
+    <button class="close"
+        onclick="closeForm(event)">
+        x</button>
+    <label for="name">name</label>
+    <input type="text" name="name">
+    <br>
+    <label for="description">description</label>
+    <input type="text" name="description">
+    <br>
+    <label for="date">date</label>
+    <input type="date" name="date">
+    <br>
+    <button type="submit">Submit</button>
+</form>
+
+
+<script>
+
+    function showForm(day){
+        $form  = document.querySelector("form");
+        $form.style.display = 'block';
+        document.querySelector("input[name='date']").value = day
+        var evt = window.event;
+        var mouseX = evt.clientX;
+        var mouseY = evt.clientY;
+        $form.style.top = mouseY + 'px';
+        $form.style.left = mouseX + 'px';
+        console.log($form.style)
+    }
+
+    function closeForm(event){
+        event.preventDefault();
+        $form.style.display = 'none';
+    }
+
+</script>
+
     
 {% endblock %}

@@ -48,6 +48,3 @@ def display_events():
     return events
 
 
-
-print(f"{get_events_by_userId(1) = }")
-# print(*display_events(), sep='\n')

@@ -15,7 +15,16 @@
             background-color: black;
             color: black;
         }
+
+        td, th{
+            border: 1px solid black;
+        }
+    
+   
     </style>
+    {% block style %}
+        
+    {% endblock %}
 </head>
 <body>
     <nav>
@@ -25,6 +34,7 @@
         <a href="/logout">Logout</a>
         <a href="/createEvent">Create Event</a>
         <a href="/getEvents">Get Events</a>
+        <a href="/allEvents">allEvents</a>
     </nav>
     {% block content %}
     {{message}}

@@ -19,7 +19,8 @@ def index():
         if event[2] not in calendar:
             calendar[event[2]] = []
         calendar[event[2]].append(event)
-    return render_template("index.html", calendar=calendar, name=session.get('username'))
+    sortedCalendarDates = sorted(calendar.keys())
+    return render_template("index.html", calendar=calendar, sortedCalendarDates=sortedCalendarDates, name=session.get('username'))
 
 
 
