@@ -2,7 +2,7 @@ from flask import Flask, request, session, redirect, render_template
 from databaseInteraction import *
 from datetime import datetime
 import os
-from utils import daysTool, sortedCalendarDates
+from utils import commonPassword, daysTool, sortedCalendarDates
 from copy import deepcopy
 
 app = Flask(__name__)
@@ -111,6 +111,10 @@ def signup():
     
     name = request.form['name']
     password = request.form['password']
+
+    isCommon = commonPassword(password)
+    if isCommon:
+        return isCommon
 
     userId = create_user_if_not_exists(name, password)
     if not userId:

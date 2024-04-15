@@ -1,14 +1,60 @@
 
+
 {% extends 'base.html' %}
 
 {% block content %}
+    <form action="/signup" method="post">
+
+        <ul>
+            <li>be at least 8 characters long</li>
+            <li>include an uppercase letter</li>
+            </li>
+        </ul>
+        <label for="name">name</label>
+        <input type="text" name="name">
+        <br>
+        <label for="password">password</label>
+        <input type="password" name="password" id="password">
+        <br>
+        <label for="confirmPassword">confirmPassword</label>
+        <input type="password" name="confirmPassword" id="confirmPassword">
+        <br>
+        <button onclick="login(event)">login</button>
+                
+        </form>
+
+
+        <script>
+            function login(event) {
+                event.preventDefault()
+                const passwordValue = document.getElementById('password').value
+                const confirmPasswordValue = document.getElementById('confirmPassword').value
+                if (passwordValue !== confirmPasswordValue) {
+                    alert('passwords do not match') 
+                    return
+                }
+                if (passwordValue.length < 8) {
+                    alert('password must be at least 8 characters long')
+                    return
+                }
+                if (passwordValue.length < 8) {
+                    alert('password must be at least 8 characters long')
+                    return
+                }
+                var containsUppercase = false;
+                passwordValue.split('').forEach(char => {
+                    if (/[A-Z]/.test(char)){
+                        containsUppercase = true
+                        document.querySelector('form').submit()
+                    }
+                })
+                if (!containsUppercase){
+
+                    alert('password must include an uppercase letter')
+                }
+            }
+
+        </script>
     
-<form action="/signup" method="POST">
-    <label for="name">name</label>
-    <input type="text" name="name">
-    <br>
-    <label for="password">password</label>
-    <input type="password" name="password">
-    <button type="submit">signup</button>
-</form>
+
 {% endblock %}

@@ -17,22 +17,32 @@ def hash(password: str, salt: str) -> str:
 def inifiniteDict() -> defaultdict:
     return defaultdict(inifiniteDict)
 
-
-tree = inifiniteDict()
-def treeInsert(word):
-    node = tree
+passwordTree = inifiniteDict()
+def passwordTreeInsert(word):
+    node = passwordTree
     for letter in word:
         node = node[letter]
 
-def commonPassword(word) -> str|False:
+def commonPassword(word) -> str|bool:
     execused = False
-    node = tree
+    node = passwordTree
     for letter in word:
         if letter not in node:
             if execused:
                 return False
             execused = True
-        node = node[letter]
+        else:
+            node = node[letter]
     if execused:
         return "this password is very similar to a common password"
-    return "this password is common"
+    return "this is common password"
+
+
+
+with open("commonPasswords.txt") as f:
+    for line in f:
+        passwordTreeInsert(line.strip())
+
+print(f"{commonPassword('password') = }")
+print(f"{commonPassword('passwrd') = }")
+print(f"{commonPassword('92365gh2') = }")
