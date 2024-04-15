@@ -2,9 +2,11 @@ from flask import Flask, request, session, redirect, render_template
 from databaseInteraction import *
 from datetime import datetime
 import os
+from utils import daysTool, sortedCalendarDates
+from copy import deepcopy
 
 app = Flask(__name__)
-app.secret_key = os.urandom(24)
+app.secret_key = bytes.fromhex('637065617365206b65792061206c656368616e676520636f6e74656e7420746f2073656372657420776f726b676572')
 
 @app.route('/allEvents')
 def index():
@@ -13,13 +15,15 @@ def index():
         return redirect('/login')
     events = get_events_by_userId(userId)
     if not events:
-        return "you have no events"
-    calendar = {}
+        return send_message("you have no events")
+    calendar = deepcopy(daysTool)
     for event in events:
-        if event[2] not in calendar:
-            calendar[event[2]] = []
-        calendar[event[2]].append(event)
-    sortedCalendarDates = sorted(calendar.keys())
+        print(f"{event = }")
+        day = event[2][-2:]
+        if day not in calendar:
+            calendar[day] = []
+        calendar[day].append(event)
+    print(f"{calendar = }")
     return render_template("index.html", calendar=calendar, sortedCalendarDates=sortedCalendarDates, name=session.get('username'))
 
 
@@ -78,6 +82,7 @@ def getEvents():
 @app.route('/logout', methods=['POST', 'GET'])
 def logout():
     session.clear()
+    return send_message("you are now logged out")
     
 
 
