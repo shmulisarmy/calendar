@@ -1,0 +1,31 @@
+<style>
+
+</style>
+
+<header>
+
+    <h1>Events</h1>
+</header>
+
+<main>
+    {% for event in events %}
+    <div class="event" hx-get="/event/{{ event[0] }}">
+        <h2>{{ event[1] }}</h2>
+        <p>{{ event[3] }}</p>
+        <p>{{ event[4] }}</p>
+        <p>{{ event[5] }}</p>
+    </div>
+    {% endfor %}
+</main>
+<center>
+
+    <form class="create-event" action="/events/create" method="post" hx-target="#events" hx-swap="beforeend">
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name"><br>
+        <input type="hidden" name="user_id" id="user_id" value="{{user_id}}"><br>
+        <label for="description">Description</label>
+        <input type="text" name="description" id="description"><br>
+        <input type="hidden" name="date" id="date" value="{{date}}"><br>
+        <input type="submit" value="Create event">
+    </form>
+</center>
