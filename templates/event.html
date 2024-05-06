@@ -8,4 +8,4 @@
         <input type="text" name="description" id="description" value="{{description}}"><br>
         <button type="submit">Edit</button>
     </form>
-    <button class="x" hx-post="/events/delete" hx-vals="id={{id}}" hx-confirm="Are you sure?">X</button>
+    <button class="x" hx-post="/events/delete" hx-vars='{"id": "{{id}}"}' hx-confirm="Are you sure?">X</button>

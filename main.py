@@ -5,9 +5,12 @@ from typing import Optional
 import sqlite3
 import hashlib
 import os
+from logic.availiblity import get_availabilies, get_availabilies_together
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
+
+
 
 
 
@@ -78,17 +81,41 @@ async def login(response: Response, username: str, password: str):
 def index(request: Request, username: str = Depends(authenticate_user)):
     return templates.TemplateResponse("calendar.html", {"request": request, "username": username})
 
+@app.get("/shared_availability/{other_user_id}/{date}")
+def get_availabilies_together_view(
+    other_user_id: int, date: str,
+    request: Request,
+    username: str = Depends(authenticate_user)
+):
+    conn = sqlite3.connect("main.db")
+    c = conn.cursor()
+    c.execute("SELECT id FROM users where name = ?", (username,))
+    this_user_id = c.fetchone()[0]
+    conn.close()
+
+    shared_availabilities = get_availabilies_together(this_user_id, other_user_id, date)
+
+    return templates.TemplateResponse("shared_availability.html", {"request": request, "shared_availabilities": shared_availabilities})
+
 
 
 
 @app.get("/users")
-def get_users():
+def get_users(reqest: Request):
     conn = sqlite3.connect("main.db")
     c = conn.cursor()
-    c.execute("SELECT * FROM users")
-    users = c.fetchall()
+    c.execute("SELECT name, email, id FROM users")
+    users: list = c.fetchall()
     conn.close()
-    return users
+
+    today = "2020-01-01"
+    availabilities = []
+
+    for user in users:
+        availabilities.append(get_availabilies(user[2], today))
+        print(f"availabilities: {availabilities}")
+
+    return templates.TemplateResponse("users.html", {"request": reqest, "users": users, "availabilities": availabilities, "get_availabilies": get_availabilies, "today": today})
 
 
 @app.get("/events")
@@ -179,7 +206,7 @@ def delete_event(id: int = Form(...), username: str = Depends(authenticate_user)
     c.execute("DELETE FROM events where id = ? and user_id = (select id from users where name = ?)", (id, username))
     conn.commit()
     conn.close()
-    return Response(status_code=status.HTTP_204_NO_CONTENT)
+    return {"message": "succes"}
 
 
 
