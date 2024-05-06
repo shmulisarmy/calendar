@@ -11,3 +11,6 @@ run command (localhost)
 ```sh
 uvicorn main:app --reload
 ```
+
+go to localhost:8000/docs
+
