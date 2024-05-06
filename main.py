@@ -3,35 +3,18 @@ from fastapi import FastAPI, Request, Response, HTTPException, Depends, Cookie
 from fastapi.templating import Jinja2Templates
 from typing import Optional
 import sqlite3
-import hashlib
-import os
 from logic.availiblity import get_availabilies, get_availabilies_together
+
+from users import users_router
+
+
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
+app.include_router(users_router)
 
 
 
-
-
-
-@app.post("/signup")
-def signup(response: Response, username: str = Form(...), password: str = Form(...), email: str = Form(...)):
-
-
-    conn = sqlite3.connect("main.db")
-    c = conn.cursor()
-    if c.execute("SELECT * FROM users WHERE name = ?", (username,)).fetchone() is not None:
-        return {"message": "this user already exists"}
-    
-    salt = hashlib.sha256(os.urandom(32)).hexdigest()
-    hashed_password_with_salt = hashlib.sha256(f"{password}{salt}".encode("utf-8")).hexdigest()
-    c.execute("INSERT INTO users(name, password, email, salt) values(?,?,?,?)", (username, hashed_password_with_salt, email, salt))
-    conn.commit()
-    conn.close()
-
-    response.set_cookie(key="session_token", value=username)
-    return {"message": "user created"}
 
 
 
@@ -49,33 +32,6 @@ def authenticate_user(session_token: Optional[str] = Cookie(None)):
 async def protected_route(user: str = Depends(authenticate_user)):
     return {"data": "secret stuff", "user": user}
 
-@app.post("/logout")
-async def logout(response: Response):
-    response.delete_cookie(key="session_token")
-    return {"message": "Logout successful"}
-
-@app.post("/login")
-async def login(response: Response, username: str, password: str):
-    conn = sqlite3.connect("main.db")
-    c = conn.cursor()
-    c.execute("SELECT salt, password FROM users WHERE name = ?", (username,))
-
-    last_row = c.fetchone()
-    print(f"last row: {last_row}")
-    if not last_row:
-        print(f"user {username} does not exist")
-        return {"message": "this user does not exist"}
-        
-    salt, db_password = last_row
-
-    hashed_password_with_salt = hashlib.sha256(f"{password}{salt}".encode("utf-8")).hexdigest()
-    print(f"hashed_password_with_salt: {hashed_password_with_salt}, db_password: {db_password}")
-    if hashed_password_with_salt != db_password:
-        print(f"invalid password for user {username}")
-        return {"message": "Invalid username or password"}
-
-    response.set_cookie(key="session_token", value=username)
-    return {"message": "Login successful"}
 
 @app.get("/")
 def index(request: Request, username: str = Depends(authenticate_user)):
@@ -100,7 +56,7 @@ def get_availabilies_together_view(
 
 
 
-@app.get("/users")
+@app.get("/all_users")
 def get_users(reqest: Request):
     conn = sqlite3.connect("main.db")
     c = conn.cursor()
@@ -186,15 +142,6 @@ def get_event_by_id(request: Request, id: int, username: str = Depends(authentic
     return templates.TemplateResponse("event.html", {"request": request, "id": id, "name": name, "description": description, "date": date})
 
 
-
-@app.post("/users/create")
-def create_user(name: str = Form(...), password: str = Form(...), email: str = Form(...)):
-    conn = sqlite3.connect("main.db")
-    c = conn.cursor()
-    c.execute("INSERT INTO users(name, password, email) values(?,?,?)", (name, password, email))
-    conn.commit()
-    conn.close()
-    return Response(status_code=status.HTTP_201_CREATED)
 
 
 
