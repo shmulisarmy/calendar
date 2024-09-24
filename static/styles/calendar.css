@@ -1,0 +1,86 @@
+
+#month-calendar{
+    margin: 10%;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    /* grid-gap: 4cap; */
+    padding: 10px;
+}
+
+@media (max-width: 1200px) {
+    #month-calendar{
+        grid-template-columns: repeat(5, 1fr);
+    }
+}
+
+@media (max-width: 800px) {
+    #month-calendar{
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 500px) {
+    #month-calendar{
+        margin: 2%;
+        display: block;
+
+    }
+}
+
+.day{
+    button{
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+    }
+}
+
+@keyframes shrink {
+    50%{
+        transform: scale(0.95);
+    }
+}
+
+.day.dragover {
+    border-style: dashed;
+    border-color: var(--silly-border);
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+
+    animation: shrink 1s;
+}
+
+.events{
+    height: 100px;
+    overflow: auto;
+
+}
+
+.event{
+    margin: 4px;
+    position: relative;
+
+
+    button{
+        display: none;
+        background-color: darkred;
+        color: white;
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+
+    &:hover button{
+        display: block;
+    }
+    
+    span{
+        display: block;
+    }
+
+    &:hover{
+        padding: 6px;
+        background-color: var(--primary-color);
+        color: var(--secondary-color);
+    }
+}

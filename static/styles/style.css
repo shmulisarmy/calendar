@@ -1,0 +1,49 @@
+:root {
+    --primary-color: #ff6347;       /* Tomato */
+    --secondary-color: #f5f5f5;     /* Light gray */
+    --background-color: #ffffff;    /* White background */
+    --text-color: #333333;          /* Dark gray text */
+    --accent-color: #1e90ff;        /* Vivid blue for accents */
+    --border-color: #cccccc;        /* Light gray borders */
+    --shadow-color: rgba(0, 0, 0, 0.1);  /* Subtle shadow */
+    --fun-font: 'Comic Sans MS', cursive, sans-serif; /* Fun font */
+    --hover-effect: scale(1.1);     /* Grow on hover */
+    --silly-border: 5px dashed #ff00ff; /* Funky pink dashed borders */
+    --glow-color: rgba(255, 99, 71, 0.5); /* Soft tomato glow */
+    --confetti-background: url('confetti.png'); /* Background image */
+    --transition-time: 0.5s;        /* Longer transition time */
+}
+
+.dark-mode {
+    --primary-color: #4b0082;       /* Indigo */
+    --secondary-color: #7d94aa;     /* Cool gray */
+    --background-color: #1c1c1c;    /* Near black background */
+    --text-color: #f0f0f0;          /* Light text */
+    --accent-color: #ff1493;        /* Deep pink for accents */
+    --border-color: #444444;        /* Darker borders */
+    --shadow-color: rgba(0, 0, 0, 0.5);  /* Stronger shadow */
+    --fun-font: 'Comic Sans MS', cursive, sans-serif; /* Fun font */
+    transition: all var(--transition-time) ease-in-out;
+}
+
+
+body{
+    margin: 0;
+    padding: 0;
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+nav{
+    position: sticky;
+    top: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    border-bottom: 1px solid var(--secondary-color);
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    z-index: 10;
+}
