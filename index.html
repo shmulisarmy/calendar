@@ -3,10 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="data.js"></script>
-    <script src="main.js"></script>
     <script src="https://unpkg.com/alpinejs@3.2.4/dist/cdn.min.js" defer></script>
-    <link rel="stylesheet" href="static/styles/*">
     <script src="static/scripts/data.js"></script>
     <script src="static/scripts/main.js"></script>
     <link rel="stylesheet" href="static/styles/style.css">
@@ -25,8 +22,10 @@
             <button onclick="toggleDarkMode()">toggle dark mode</button>
         </div>
     </nav>
+
+    
     <div id="month-calendar" x-data="calendar">
-        <template x-for="[day_number, day] in Array.from(calendar)">
+        <template  x-for="[day_number, day] in Array.from(calendar)">
             <fieldset 
                 @drop="moveEvent(day_number, dragging)" 
                 @dragover.prevent="$event.currentTarget.classList.add('dragover')"
@@ -35,6 +34,7 @@
                 :data-day-number="day_number">
                 <legend x-text="'day: ' + day_number"></legend>
                 <ul class="events">
+
                     <template x-for="event in day.events">
                         <li class="event" draggable="true" 
                             @dragstart="dragging = { day_number, name: event.name }">

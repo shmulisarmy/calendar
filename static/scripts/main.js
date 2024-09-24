@@ -21,7 +21,7 @@ Alpine.data("calendar", () => ({
 
             
             oldDay.events = oldDay.events.filter((event) => event.name !== dragging.name);
-            newDay.events.push(event);
+            newDay.events.unshift(event);
             console.log({oldDay, newDay});
 
             document.dispatchEvent(new CustomEvent('calendar-updated'));

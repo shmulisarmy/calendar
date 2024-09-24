@@ -33,13 +33,10 @@
         border: none;
         cursor: pointer;
     }
+    transition: 1s;
 }
 
-@keyframes shrink {
-    50%{
-        transform: scale(0.95);
-    }
-}
+
 
 .day.dragover {
     border-style: dashed;
@@ -47,7 +44,8 @@
     background-color: var(--secondary-color);
     color: var(--primary-color);
 
-    animation: shrink 1s;
+    transform: scale(0.95);
+
 }
 
 .events{
