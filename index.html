@@ -35,8 +35,8 @@
                 <legend x-text="'day: ' + day_number"></legend>
                 <ul class="events">
 
-                    <template x-for="event in day.events">
-                        <li class="event" draggable="true" 
+                    <template x-for="event in day.events" :key="event.name">
+                        <li x-intersect="el.classList.add('show')" class="event" draggable="true" 
                             @dragstart="dragging = { day_number, name: event.name }">
                             <span x-text="event.name"></span>
                             <span x-text="event.description"></span>

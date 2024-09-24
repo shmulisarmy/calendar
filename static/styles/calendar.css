@@ -82,3 +82,17 @@
         color: var(--secondary-color);
     }
 }
+
+
+@keyframes event-created {
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+
+.event{
+    animation: event-created 2s;
+}
